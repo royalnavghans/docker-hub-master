@@ -15,7 +15,7 @@ public class DockerHubApplication {
 
     @GetMapping("/users")
     public String getMessage() {
-        return "Message from AWS EC2 deployed through Docker";
+        return "Message from Royalnavghan AWS EC2 deployed through Docker";
     }
 
 }
