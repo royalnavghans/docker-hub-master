@@ -1,0 +1,39 @@
+# Dockerize the spring boot application and deploy in EC2
+- Install the docker in the local machine
+  - For windows: [click here](https://www.docker.com/get-started/)
+  - You should have WSL installed in the system to run docker in windows
+  - run `wsl --update` to install wsl in local machine.
+  - restart to apply the changes.
+  - check docker is running or not by opening cmd and type docker then enter.
+- Create a docker image of your Spring boot application
+  - create a spring boot application or clone this repo. 
+  - clean and build the jar file by running `.\mvnw clean package`, it will clear the target folder and rebuilds it with new jar file.
+  - Create a `Dockerfile` in the root of your application.
+  - add the first line `FROM <jdk version>`
+  - next line `COPY target\your-jar-file.jar new-name-for-docker-image.jar`
+  - next line `ENTRYPOINT ["java", "-jar", "/new-name-for-docker-image.jar"]`
+  - make sure your docker application is up and running.
+  - to build the docker image execute `docker build --tag=<any name for your application> .` in the same path where your `Dockerfile` is created.
+  - you can check the new image added in your docker images list by running `docker images`
+  - to run the docker image as container you can use `docker run -i -t <imageid> /bin/bash`
+  - to check if it is running or not you can use `docker ps`
+  - to stop the running docker image you can use `docker stop <containerId>`
+- Push a docker image to docker-hub
+  - create a docker-hub account by clicking [here](https://hub.docker.com/signup)
+  - then sign in with the same account in your docker desktop application
+  - to push the docker image into docker-hub, we need to fist create a tag for it then push it.
+    - to create a tag for the docker image use `docker tag tag-name username/reponame:anytag`
+    - to push the repository into docker-hub use `docker push username/reponame:anytag`
+  - now you can find the docker image available in the docker-hub repositories.
+- Launch an EC2 instance
+  - login to your aws account by clicking [here](https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fconsole.aws.amazon.com%2Fconsole%2Fhome%3FhashArgs%3D%2523%26isauthcode%3Dtrue%26state%3DhashArgsFromTB_eu-north-1_090ecd3a0f2a3bbf&client_id=arn%3Aaws%3Asignin%3A%3A%3Aconsole%2Fcanvas&forceMobileApp=0&code_challenge=rS8ChCWnemQfIi0EPWklAief0d-bI8Gj7pV6wcpiFKg&code_challenge_method=SHA-256), if you don't have one create one by clicking [here](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&src=header_signup&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start/email)
+  - search for EC2 service and open it,
+  - launch a new EC2 instance choose ubuntu as a AMI or any other image, i am not going deep into how to create an EC2 instance, [click here](https://medium.com/@GalarnykMichael/aws-ec2-part-1-creating-ec2-instance-9d7f8368f78a) to know more about EC2.
+  - SSH into the machine, run a sudo apt-update
+- Run the docker image in EC2
+  - if docker is already not installed then use `sudo apt install docker.io -y` to install.
+  - if docker is not running use `sudo service docker start` to start the docker.
+  - to pull the docker image from docker-hub and run it use `sudo docker run -d -p <newport><actualport> docker-hub-username/image-name`
+  - now it will pull the image from your repo and run it in the ubuntu
+  - and make sure you added the port number in the ec2 security group to access it outside. to know more about security group [click here](https://medium.com/geekculture/aws-article-6-security-groups-in-ec2-6aa6e9a1faf)
+  - if everything goes well till here, you can access your application anywhere in the internet.
