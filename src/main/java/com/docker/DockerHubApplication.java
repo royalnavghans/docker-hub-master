@@ -15,7 +15,7 @@ public class DockerHubApplication {
 
     @GetMapping("/users")
     public String getMessage() {
-        return "Message from Royalnavghan AWS EC2 deployed through Docker Using Jenkins succesfully";
+        return "Message from Royalnavghan AWS EC2 Ubuntu Server deployed through Docker Using Jenkins succesfully";
     }
 
 }
