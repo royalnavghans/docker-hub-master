@@ -27,7 +27,6 @@ pipeline {
                    bat 'docker push royalnavghan/royal-integeration'
                 }
             }
-        }
 
                 }
             }
